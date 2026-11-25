@@ -1,0 +1,244 @@
+# Reason Code Evidence Matrix (Visa, Mastercard, Amex)
+# Used by scripts/triage_and_ce3.py and Step 3 gap checks.
+
+reason_codes:
+  visa_10_4:
+    network: Visa
+    code: "10.4"
+    category: "Other Fraud - Card-Absent Environment"
+    physical_mandatory:
+      - avs_cvv_match
+      - delivery_proof
+      - order_confirmation
+    physical_recommended:
+      - ce3_prior_orders
+      - ip_device_log
+      - customer_communication
+    digital_mandatory:
+      - login_timestamps
+      - ip_geolocation_match
+      - feature_usage_logs
+      - clickwrap_tos_acceptance
+    digital_recommended:
+      - ce3_prior_orders
+      - avs_cvv_match
+      - customer_communication
+    ce3_eligible: true
+
+  visa_13_1:
+    network: Visa
+    code: "13.1"
+    category: "Merchandise / Services Not Received"
+    physical_mandatory:
+      - carrier_tracking_proof
+      - delivery_confirmation
+      - shipping_address_match
+    physical_recommended:
+      - delivery_signature
+      - order_confirmation
+      - customer_communication
+    digital_mandatory:
+      - login_timestamps
+      - ip_geolocation_match
+      - feature_usage_logs
+      - access_delivery_log
+    digital_recommended:
+      - clickwrap_tos_acceptance
+      - customer_communication
+    ce3_eligible: false
+
+  visa_13_3:
+    network: Visa
+    code: "13.3"
+    category: "Not as Described or Defective Merchandise / Services"
+    physical_mandatory:
+      - product_description_listing
+      - order_confirmation
+      - refund_return_policy
+    physical_recommended:
+      - customer_communication
+      - delivery_confirmation
+      - quality_inspection_record
+    digital_mandatory:
+      - product_description_listing
+      - feature_usage_logs
+      - clickwrap_tos_acceptance
+      - refund_return_policy
+    digital_recommended:
+      - customer_communication
+      - login_timestamps
+    ce3_eligible: false
+
+  visa_13_2:
+    network: Visa
+    code: "13.2"
+    category: "Cancelled Recurring Transaction"
+    physical_mandatory:
+      - recurring_billing_agreement
+      - cancellation_policy_disclosure
+      - no_prior_cancellation_log
+    physical_recommended:
+      - prior_undisputed_billing_cycles
+      - customer_communication
+    digital_mandatory:
+      - recurring_billing_agreement
+      - clickwrap_tos_acceptance
+      - feature_usage_logs
+      - no_prior_cancellation_log
+    digital_recommended:
+      - prior_undisputed_billing_cycles
+      - login_timestamps
+    ce3_eligible: false
+
+  mastercard_4837:
+    network: Mastercard
+    code: "4837"
+    category: "No Cardholder Authorization"
+    physical_mandatory:
+      - avs_cvv_match
+      - delivery_proof
+      - order_confirmation
+    physical_recommended:
+      - ip_device_log
+      - prior_undisputed_orders
+      - customer_communication
+    digital_mandatory:
+      - login_timestamps
+      - ip_geolocation_match
+      - feature_usage_logs
+      - clickwrap_tos_acceptance
+    digital_recommended:
+      - avs_cvv_match
+      - prior_undisputed_orders
+    ce3_eligible: false
+
+  mastercard_4855:
+    network: Mastercard
+    code: "4855"
+    category: "Goods or Services Not Provided"
+    physical_mandatory:
+      - carrier_tracking_proof
+      - delivery_confirmation
+      - shipping_address_match
+    physical_recommended:
+      - delivery_signature
+      - customer_communication
+    digital_mandatory:
+      - login_timestamps
+      - ip_geolocation_match
+      - feature_usage_logs
+      - access_delivery_log
+    digital_recommended:
+      - clickwrap_tos_acceptance
+      - customer_communication
+    ce3_eligible: false
+
+  mastercard_4853:
+    network: Mastercard
+    code: "4853"
+    category: "Cardholder Dispute (Not as Described / Cancelled Recurring)"
+    physical_mandatory:
+      - product_description_listing
+      - refund_return_policy
+      - order_confirmation
+    physical_recommended:
+      - customer_communication
+      - delivery_confirmation
+    digital_mandatory:
+      - clickwrap_tos_acceptance
+      - refund_return_policy
+      - feature_usage_logs
+    digital_recommended:
+      - login_timestamps
+      - customer_communication
+    ce3_eligible: false
+
+  amex_f29:
+    network: Amex
+    code: "F29"
+    category: "Card Not Present Fraud"
+    physical_mandatory:
+      - avs_cvv_match
+      - delivery_proof
+      - shipping_address_match
+    physical_recommended:
+      - delivery_signature
+      - ip_device_log
+      - prior_undisputed_orders
+    digital_mandatory:
+      - login_timestamps
+      - ip_geolocation_match
+      - feature_usage_logs
+      - clickwrap_tos_acceptance
+    digital_recommended:
+      - avs_cvv_match
+      - prior_undisputed_orders
+    ce3_eligible: false
+
+  amex_c08:
+    network: Amex
+    code: "C08"
+    category: "Goods / Services Not Received or Only Partially Received"
+    physical_mandatory:
+      - carrier_tracking_proof
+      - delivery_confirmation
+      - shipping_address_match
+    physical_recommended:
+      - delivery_signature
+      - customer_communication
+    digital_mandatory:
+      - login_timestamps
+      - ip_geolocation_match
+      - feature_usage_logs
+      - access_delivery_log
+    digital_recommended:
+      - clickwrap_tos_acceptance
+      - customer_communication
+    ce3_eligible: false
+
+  amex_c31:
+    network: Amex
+    code: "C31"
+    category: "Goods / Services Not as Described"
+    physical_mandatory:
+      - product_description_listing
+      - refund_return_policy
+      - order_confirmation
+    physical_recommended:
+      - customer_communication
+      - delivery_confirmation
+    digital_mandatory:
+      - product_description_listing
+      - clickwrap_tos_acceptance
+      - feature_usage_logs
+      - refund_return_policy
+    digital_recommended:
+      - login_timestamps
+      - customer_communication
+    ce3_eligible: false
+
+exhibit_descriptions:
+  avs_cvv_match: "Gateway AVS and CVV verification result for the disputed charge"
+  delivery_proof: "Carrier delivery confirmation or proof of delivery (POD) PDF"
+  delivery_confirmation: "Carrier delivery confirmation showing Delivered status and date"
+  delivery_signature: "Signed carrier proof of delivery (recommended for high-value orders)"
+  carrier_tracking_proof: "Carrier tracking number and full transit scan history"
+  shipping_address_match: "Proof that shipping address matches the customer order record"
+  order_confirmation: "Order invoice/receipt with itemized SKU, amount, and timestamp"
+  ce3_prior_orders: "Two undisputed prior orders (120 to 365 days prior) matching Visa CE 3.0 elements"
+  ip_device_log: "Checkout IP address, device ID/fingerprint, and user-agent log"
+  customer_communication: "Factual excerpt of relevant customer support emails"
+  login_timestamps: "Authenticated user login timestamps before and after billing"
+  ip_geolocation_match: "IP geolocation log linking account logins to the billing region"
+  feature_usage_logs: "Product, download, or SaaS feature usage logs after purchase"
+  clickwrap_tos_acceptance: "Timestamped clickwrap acceptance of Terms of Service and billing policy"
+  access_delivery_log: "Server log confirming digital download or account provisioning"
+  product_description_listing: "Archived product page or plan description at time of purchase"
+  refund_return_policy: "Published refund, return, or cancellation policy shown at checkout"
+  quality_inspection_record: "Pre-shipment inspection or fulfillment photo log"
+  recurring_billing_agreement: "Signed or clickwrap recurring subscription authorization"
+  cancellation_policy_disclosure: "Clear cancellation instructions disclosed prior to billing"
+  no_prior_cancellation_log: "Account log showing no cancellation request before the billing date"
+  prior_undisputed_billing_cycles: "History of prior paid and undisputed recurring invoices"
+  prior_undisputed_orders: "Prior completed and undisputed orders from the same customer"
+  written_withdrawal_letter: "Signed written cardholder dispute withdrawal letter on customer letterhead or signed PDF"
